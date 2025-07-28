@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+public class PlayerController : MonoBehaviour
+{
+    public float moveSpeed = 5f;
+
+    private Animator animator;
+    private Vector2 moveInput;
+
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        // 입력 받기 (WASD 또는 방향키)
+        moveInput = new Vector2(
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        ).normalized;
+
+        // 위치 이동
+        transform.Translate(moveInput * moveSpeed * Time.deltaTime);
+
+        // 애니메이션 파라미터 제어
+        bool isMoving = moveInput.sqrMagnitude > 0;
+        animator.SetBool("isMoving", isMoving);
+    }
+}
